@@ -15,8 +15,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'DonorController@index');
 Route::get('create', 'DonorController@create');
-Route::post('store', 'DonorController@store');
+Route::get('login','DonorController@login');
+Route::get('list', 'DonorController@list');
 
-Route::get('/tks', function(){
-    return view('bemVindo');
+Route::post('store', 'DonorController@store');
+Route::post('list', 'DonorController@list');
+Route::post('filter', 'DonorController@list');
+
+Route::get('/obrigado', function(){
+    return view('obrigado');
 });

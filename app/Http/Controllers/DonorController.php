@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Donor;
+use Illuminate\Support\Facades\DB;
 
 class DonorController extends Controller
 {
@@ -43,51 +44,27 @@ class DonorController extends Controller
         $donor->blood = $request->blood;
         $donor->save();
         
-        return \redirect('/');
+        return \redirect('/obrigado');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+   public function login(){
+       return view('login');
+   }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+   public function list(Request $request){
+    
+            $city = $request['city'];
+            $blood = $request['blood'];
+    
+           if($city){
+               $donors = DB::table('donors')->where('city', '=', $city)->paginate(10);
+           }elseif($blood){
+               $donors = DB::table('donors')->where('blood', '=', $blood)->paginate(10);
+           }else{
+               $donors = DB::table('donors')->paginate(10);
+           }
+        
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+        return view('list', compact('donors'));
+   }
 }
